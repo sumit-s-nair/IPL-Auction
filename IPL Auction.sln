@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IPL Auction", "IPL Auction\IPL Auction.pyproj", "{E58E801E-56A7-490F-B389-EFC7256EAF70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E58E801E-56A7-490F-B389-EFC7256EAF70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E58E801E-56A7-490F-B389-EFC7256EAF70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBF1EC69-BB8A-44FD-9B32-8EFBD7D40491}
+	EndGlobalSection
+EndGlobal
