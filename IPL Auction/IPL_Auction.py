@@ -3,95 +3,15 @@ from tkinter import ttk, PhotoImage
 import customtkinter as ctk
 import tkinter.font
 from PIL import Image
+from auction_lib import *
 
 # Functions
-def show_page1():
-    page1.pack()
-    page2.pack_forget()
-
-def hf(label):
-    hf = ctk.CTkFont( family = "Portico Rounded", size = 50, weight = "bold")
-    label.configure(font = hf)
-
-def bf(button):
-    bf = ctk.CTkFont( family = "Portico Rounded", size = 20, weight = "bold")
-    button.configure(font = bf)
-
-def pf(button):
-    pf = ctk.CTkFont( family = "Portico Rounded", size = 15, weight = "bold")
-    button.configure(font = pf)
-
-def af(button):
-    af = ctk.CTkFont( family = "Portico Light", size = 15, weight = "bold")
-    button.configure(font = af)
-
-def sf(button):
-    af = ctk.CTkFont( family = "Portico Light", size = 20, weight = "bold")
-    button.configure(font = af)
-
-def mf(button):
-    af = ctk.CTkFont( family = "Portico light", size = 25, weight = "normal")
-    button.configure(font = af)
-
-def show_page2a():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image1)
-    Teamname.configure(text = "ROYAL\nCHALLENGERS\nBANGALORE")
-
-def show_page2b():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image2)
-    Teamname.configure(text = "CHENNAI\nSUPER KINGS")
-
-def show_page2c():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image3)
-    Teamname.configure(text = "MUMBAI\nINDIANS")
-
-def show_page2d():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image4)
-    Teamname.configure(text = "SUNRISERS\nHYDERABAD")
-
-def show_page2e():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image5)
-    Teamname.configure(text = "RAJASTHAN\nROYALS")
-
-def show_page2f():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image6)
-    Teamname.configure(text = "KOLKATA\nKNIGHT RIDERS")
-
-def show_page2g():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image7)
-    Teamname.configure(text = "PUNJAB\nKINGS")
-
-def show_page2h():
-    page1.pack_forget()
-    page2.pack()
-    imageprofile.configure(image=image8)
-    Teamname.configure(text = "DELHI\nCAPITALS")
-
-def bid():
-    pass
-
-def pas():
-    pass
 
 def back():
     def yes1():
-        show_page1()
+        show_page1(page1,page2)
         windowb.destroy()
-    windowb = ctk.CTkToplevel(window)
+    windowb = ctk.CTkToplevel()
     windowb.title("Warning")
     windowb.geometry("400x150")
     windowb.grid_rowconfigure(1)
@@ -106,6 +26,7 @@ def back():
     frame.grid(row = 1, column = 0, sticky = 'ew', padx = 10, pady = 10)
     windowb.attributes('-topmost',True)
     windowb.mainloop()
+
   
 
 # Window
@@ -127,6 +48,10 @@ page2 = ctk.CTkFrame(window)
 page2.grid_rowconfigure(0)
 page2.grid_columnconfigure(0, weight=1)
 page2.grid_columnconfigure(1, weight=4)
+
+profile_frame = ctk.CTkFrame(page2)
+imageprofile = ctk.CTkLabel(profile_frame, text = "")
+Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="transparent")
 
 # PAGE 1
 
@@ -150,10 +75,14 @@ containera.grid_columnconfigure(3, weight=1)
 container1 = ctk.CTkFrame(master = containera)
 
 image1 = ctk.CTkImage(dark_image=Image.open(r"assets\RCB.png"),size=(230, 230))
-image_label1 = ctk.CTkButton(master = container1, image = image1, text = "", command = show_page2a, fg_color = "transparent", hover_color = "#14375E")
+
+def fa() :
+    show_page2(page1, page2, imageprofile, image1, Teamname, name = "ROYAL\nCHALLENGERS\nBANGALORE")
+
+image_label1 = ctk.CTkButton(master = container1, image = image1, text = "", command = fa, fg_color = "transparent", hover_color = "#14375E")
 image_label1.pack(padx = 20, pady = 10)
 
-team1 = ctk.CTkButton(master = container1, command=show_page2a, text = "ROYAL\nCHALLENGERS\nBANGALORE", )
+team1 = ctk.CTkButton(master = container1, command = fa, text = "ROYAL\nCHALLENGERS\nBANGALORE", )
 bf(team1)
 team1.pack(pady=20)
 container1.grid(column = 0, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -163,10 +92,14 @@ container1.grid(column = 0, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 container2 = ctk.CTkFrame(master = containera)
 
 image2 = ctk.CTkImage(dark_image=Image.open(r"assets\CSK.png"),size=(230, 230))
-image_label2 = ctk.CTkButton(master = container2, image=image2, text = "", command = show_page2b, fg_color = "transparent", hover_color = "#14375E")
+
+def fb() :
+    show_page2(page1, page2, imageprofile, image2, Teamname, name = "CHENNAI\nSUPER KINGS")
+    
+image_label2 = ctk.CTkButton(master = container2, image=image2, text = "", command = fb, fg_color = "transparent", hover_color = "#14375E")
 image_label2.pack(padx = 20, pady = 20)
 
-team2 = ctk.CTkButton(master = container2, command=show_page2b, text = "CHENNAI\nSUPER KINGS")
+team2 = ctk.CTkButton(master = container2, command = fb, text = "CHENNAI\nSUPER KINGS")
 bf(team2)
 team2.pack(pady=20)
 container2.grid(column = 1, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -176,10 +109,14 @@ container2.grid(column = 1, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 container3 = ctk.CTkFrame(master = containera)
 
 image3 = ctk.CTkImage(dark_image=Image.open(r"assets\MI.png"),size=(230, 230))
-image_label3 = ctk.CTkButton(master = container3, image=image3, text = "", command = show_page2c, fg_color = "transparent", hover_color = "#14375E")
+
+def fc() :
+    show_page2(page1, page2, imageprofile, image3, Teamname, name = "MUMBAI\nINDIANS")
+
+image_label3 = ctk.CTkButton(master = container3, image=image3, text = "", command = fc, fg_color = "transparent", hover_color = "#14375E")
 image_label3.pack(padx = 20, pady = 20)
 
-team3 = ctk.CTkButton(master = container3, text = "MUMBAI\nINDIANS", command=show_page2c)
+team3 = ctk.CTkButton(master = container3, text = "MUMBAI\nINDIANS", command = fc)
 bf(team3)
 team3.pack(pady=20)
 container3.grid(column = 2, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -188,11 +125,14 @@ container3.grid(column = 2, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 
 container4 = ctk.CTkFrame(master = containera)
 
+def fd() :
+    show_page2(page1, page2, imageprofile, image4, Teamname, name = "SUNRISERS\nHYDERABAD")
+
 image4 = ctk.CTkImage(dark_image=Image.open(r"assets\SRH.png"),size=(230, 230))
-image_label4 = ctk.CTkButton(master = container4, image=image4, text = "", command = show_page2d, fg_color = "transparent", hover_color = "#14375E")
+image_label4 = ctk.CTkButton(master = container4, image=image4, text = "", command = fd, fg_color = "transparent", hover_color = "#14375E")
 image_label4.pack(padx = 20, pady = 20)
 
-team4 = ctk.CTkButton(master = container4, text = "SUNRISERS\nHYDERABAD", command=show_page2d)
+team4 = ctk.CTkButton(master = container4, text = "SUNRISERS\nHYDERABAD", command = fd)
 bf(team4)
 team4.pack(pady=20)
 container4.grid(column = 3, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -211,10 +151,14 @@ containerb.grid_columnconfigure(3, weight=1)
 container5 = ctk.CTkFrame(master = containerb)
 
 image5 = ctk.CTkImage(dark_image=Image.open(r"assets\RR.png"),size=(230, 230))
-image_label5 = ctk.CTkButton(master = container5, image=image5, text = "", command = show_page2e, fg_color = "transparent", hover_color = "#14375E")
+
+def fe() :
+    show_page2(page1, page2, imageprofile, image5, Teamname, name = "RAJASTHAN\nROYALS")
+
+image_label5 = ctk.CTkButton(master = container5, image=image5, text = "", command = fe, fg_color = "transparent", hover_color = "#14375E")
 image_label5.pack(padx = 20, pady = 20)
 
-team5 = ctk.CTkButton(master = container5, text = "RAJASTHAN\nROYALS", command=show_page2e)
+team5 = ctk.CTkButton(master = container5, text = "RAJASTHAN\nROYALS", command = fe)
 bf(team5)
 team5.pack(pady=20)
 container5.grid(column = 0, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -224,10 +168,14 @@ container5.grid(column = 0, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 container6 = ctk.CTkFrame(master = containerb)
 
 image6 = ctk.CTkImage(dark_image=Image.open(r"assets\KKR.png"),size=(230, 230))
-image_label6 = ctk.CTkButton(master = container6, image=image6, text = "", command = show_page2f, fg_color = "transparent", hover_color = "#14375E")
+
+def ff() :
+    show_page2(page1, page2, imageprofile, image6, Teamname, name = "KOLKATA\nKNIGHT RIDERS")
+
+image_label6 = ctk.CTkButton(master = container6, image=image6, text = "", command = ff, fg_color = "transparent", hover_color = "#14375E")
 image_label6.pack(padx = 20, pady = 20)
 
-team6 = ctk.CTkButton(master = container6, text = "KOLKATA\nKNIGHT RIDERS", command=show_page2f)
+team6 = ctk.CTkButton(master = container6, text = "KOLKATA\nKNIGHT RIDERS", command = ff)
 bf(team6)
 team6.pack(pady=20)
 container6.grid(column = 1, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -237,10 +185,14 @@ container6.grid(column = 1, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 container7 = ctk.CTkFrame(master = containerb)
 
 image7 = ctk.CTkImage(dark_image=Image.open(r"assets\PK.png"),size=(230, 230))
-image_label7 = ctk.CTkButton(master = container7, image=image7, text = "", command = show_page2g, fg_color = "transparent", hover_color = "#14375E")
+
+def fg() :
+    show_page2(page1, page2, imageprofile, image7, Teamname, name = "PUNJAB\nKINGS")
+
+image_label7 = ctk.CTkButton(master = container7, image=image7, text = "", command = fg, fg_color = "transparent", hover_color = "#14375E")
 image_label7.pack(padx = 20, pady = 20)
 
-team7 = ctk.CTkButton(master = container7, text = "PUNJAB\nKINGS", command=show_page2g)
+team7 = ctk.CTkButton(master = container7, text = "PUNJAB\nKINGS", command = fg)
 bf(team7)
 team7.pack(pady=20)
 container7.grid(column = 2, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -250,10 +202,14 @@ container7.grid(column = 2, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 container8 = ctk.CTkFrame(master = containerb)
 
 image8 = ctk.CTkImage(dark_image=Image.open(r"assets\DC.png"),size=(230, 230))
-image_label8 = ctk.CTkButton(master = container8, image=image8, text = "", command = show_page2h, fg_color = "transparent", hover_color = "#14375E")
+
+def fh() :
+    show_page2(page1, page2, imageprofile, image8, Teamname, name = "DELHI\nCAPITALS")
+
+image_label8 = ctk.CTkButton(master = container8, image=image8, text = "", command = fh, fg_color = "transparent", hover_color = "#14375E")
 image_label8.pack(padx = 20, pady = 20)
 
-team8 = ctk.CTkButton(master = container8, text = "DELHI\nCAPITALS", command=show_page2h)
+team8 = ctk.CTkButton(master = container8, text = "DELHI\nCAPITALS", command = fh)
 bf(team8)
 team8.pack(pady=20)
 container8.grid(column = 3, row = 0, padx = 105, pady = 40, sticky = 'nsew')
@@ -261,6 +217,7 @@ container8.grid(column = 3, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 # PAGE 2
 
 # Back
+
 
 backim = ctk.CTkImage(dark_image=Image.open(r"assets\back.png"),size=(33, 35))
 back_frame = ctk.CTkFrame(page2)
@@ -270,7 +227,6 @@ back.pack(padx = 10, pady = 10)
 
 # Profile
 
-profile_frame = ctk.CTkFrame(page2)
 profile_frame.grid_rowconfigure(0,weight=1)
 profile_frame.grid_columnconfigure(0, weight=1)
 profile_frame.grid_rowconfigure(1,weight=4)
@@ -278,10 +234,8 @@ profile_frame.grid(row = 0,column=1, sticky = 'n')
 
 # User Profile
 
-imageprofile = ctk.CTkLabel(profile_frame, text = "")
 imageprofile.grid(padx=20,pady=10)
 
-Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="transparent")
 bf(Teamname)
 Teamname.grid(column=0, pady = 10, padx = 20)
 
@@ -290,71 +244,12 @@ Teamname.grid(column=0, pady = 10, padx = 20)
 player_list_frame = ctk.CTkScrollableFrame(profile_frame, height = 590, width = 250, label_text = "Player List", label_font = ("Portico Rounded", 20), label_fg_color = "#1F538D", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E")
 player_list_frame.grid(column=0,padx=20,pady=10)
 
-playername1f = ctk.CTkFrame(master = player_list_frame)
-playername1f.pack(padx=10,pady=5)
-playername1 = ctk.CTkLabel(master = playername1f,text="Player 1")
-pf(playername1)
-playername1.pack(padx=30,pady=10)
-
-playername2f = ctk.CTkFrame(master = player_list_frame)
-playername2f.pack(padx=10,pady=5)
-playername2 = ctk.CTkLabel(master = playername2f,text="Player 2")
-pf(playername2)
-playername2.pack(padx=30,pady=10)
-
-playername3f = ctk.CTkFrame(master = player_list_frame)
-playername3f.pack(padx=10,pady=5)
-playername3 = ctk.CTkLabel(master = playername3f,text="Player 3")
-pf(playername3)
-playername3.pack(padx=30,pady=10)
-
-playername4f = ctk.CTkFrame(master = player_list_frame)
-playername4f.pack(padx=10,pady=5)
-playername4 = ctk.CTkLabel(master = playername4f,text="Player 4")
-pf(playername4)
-playername4.pack(padx=30,pady=10)
-
-playername5f = ctk.CTkFrame(master = player_list_frame)
-playername5f.pack(padx=10,pady=5)
-playername5 = ctk.CTkLabel(master = playername5f,text="Player 5")
-pf(playername5)
-playername5.pack(padx=30,pady=10)
-
-playername6f = ctk.CTkFrame(master = player_list_frame)
-playername6f.pack(padx=10,pady=5)
-playername6 = ctk.CTkLabel(master = playername6f,text="Player 6")
-pf(playername6)
-playername6.pack(padx=30,pady=10)
-
-playername7f = ctk.CTkFrame(master = player_list_frame)
-playername7f.pack(padx=10,pady=5)
-playername7 = ctk.CTkLabel(master = playername7f,text="Player 7")
-pf(playername7)
-playername7.pack(padx=30,pady=10)
-
-playername8f = ctk.CTkFrame(master = player_list_frame)
-playername8f.pack(padx=10,pady=5)
-playername8 = ctk.CTkLabel(master = playername8f,text="Player 8")
-pf(playername8)
-playername8.pack(padx=30,pady=10)
-
-playername9f = ctk.CTkFrame(master = player_list_frame)
-playername9f.pack(padx=10,pady=5)
-playername9 = ctk.CTkLabel(master = playername9f,text="Player 9")
-pf(playername9)
-playername9.pack(padx=30,pady=10)
-
-playername10f = ctk.CTkFrame(master = player_list_frame)
-playername10f.pack(padx=10,pady=5)
-playername10 = ctk.CTkLabel(master = playername10f,text="Player 10")
-pf(playername10)
-playername10.pack(padx=30,pady=10)
-
-playername11f = ctk.CTkFrame(master = player_list_frame)
-playername11f.pack(padx=10,pady=5)
-playername11 = ctk.CTkLabel(master = playername11f,text="Player 11")
-pf(playername11)
-playername11.pack(padx=30,pady=10)
+for i in range(1,16):
+    playernameif = ctk.CTkFrame(master = player_list_frame)
+    playernameif.pack(padx=10,pady=5)
+    playernamei = ctk.CTkLabel(master = playernameif,text="Player %i" %i)
+    pf(playernamei)
+    playernamei.pack(padx=30,pady=10)
 
 # Auction
 
@@ -514,6 +409,6 @@ mf(pas)
 
 # Run
 
-show_page1()
+show_page1(page1,page2)
 window.state("zoomed")
 window.mainloop()
