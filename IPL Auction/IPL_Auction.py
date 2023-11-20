@@ -4,6 +4,8 @@ import customtkinter as ctk
 import tkinter.font
 from PIL import Image
 from auction_lib import *
+import datetime
+import mysql
 
 # Functions
 
@@ -37,7 +39,6 @@ ctk.set_default_color_theme("dark-blue")
 window = ctk.CTk()
 window.title("IPL Auction Simulation")
 window.geometry("1920x1080")
-window.state('normal')
 
 page1 = ctk.CTkFrame(window)
 page1.grid_rowconfigure(0, weight=1)
@@ -74,7 +75,7 @@ containera.grid_columnconfigure(3, weight=1)
 
 container1 = ctk.CTkFrame(master = containera)
 
-image1 = ctk.CTkImage(dark_image=Image.open(r"assets\RCB.png"),size=(230, 230))
+image1 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/RCB.png"),size=(230, 230))
 
 def fa() :
     show_page2(page1, page2, imageprofile, image1, Teamname, name = "ROYAL\nCHALLENGERS\nBANGALORE")
@@ -91,7 +92,7 @@ container1.grid(column = 0, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 
 container2 = ctk.CTkFrame(master = containera)
 
-image2 = ctk.CTkImage(dark_image=Image.open(r"assets\CSK.png"),size=(230, 230))
+image2 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/CSK.png"),size=(230, 230))
 
 def fb() :
     show_page2(page1, page2, imageprofile, image2, Teamname, name = "CHENNAI\nSUPER KINGS")
@@ -108,7 +109,7 @@ container2.grid(column = 1, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 
 container3 = ctk.CTkFrame(master = containera)
 
-image3 = ctk.CTkImage(dark_image=Image.open(r"assets\MI.png"),size=(230, 230))
+image3 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/MI.png"),size=(230, 230))
 
 def fc() :
     show_page2(page1, page2, imageprofile, image3, Teamname, name = "MUMBAI\nINDIANS")
@@ -128,7 +129,7 @@ container4 = ctk.CTkFrame(master = containera)
 def fd() :
     show_page2(page1, page2, imageprofile, image4, Teamname, name = "SUNRISERS\nHYDERABAD")
 
-image4 = ctk.CTkImage(dark_image=Image.open(r"assets\SRH.png"),size=(230, 230))
+image4 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/SRH.png"),size=(230, 230))
 image_label4 = ctk.CTkButton(master = container4, image=image4, text = "", command = fd, fg_color = "transparent", hover_color = "#14375E")
 image_label4.pack(padx = 20, pady = 20)
 
@@ -150,7 +151,7 @@ containerb.grid_columnconfigure(3, weight=1)
 
 container5 = ctk.CTkFrame(master = containerb)
 
-image5 = ctk.CTkImage(dark_image=Image.open(r"assets\RR.png"),size=(230, 230))
+image5 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/RR.png"),size=(230, 230))
 
 def fe() :
     show_page2(page1, page2, imageprofile, image5, Teamname, name = "RAJASTHAN\nROYALS")
@@ -167,7 +168,7 @@ container5.grid(column = 0, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 
 container6 = ctk.CTkFrame(master = containerb)
 
-image6 = ctk.CTkImage(dark_image=Image.open(r"assets\KKR.png"),size=(230, 230))
+image6 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/KKR.png"),size=(230, 230))
 
 def ff() :
     show_page2(page1, page2, imageprofile, image6, Teamname, name = "KOLKATA\nKNIGHT RIDERS")
@@ -184,7 +185,7 @@ container6.grid(column = 1, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 
 container7 = ctk.CTkFrame(master = containerb)
 
-image7 = ctk.CTkImage(dark_image=Image.open(r"assets\PK.png"),size=(230, 230))
+image7 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/PK.png"),size=(230, 230))
 
 def fg() :
     show_page2(page1, page2, imageprofile, image7, Teamname, name = "PUNJAB\nKINGS")
@@ -201,7 +202,7 @@ container7.grid(column = 2, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 
 container8 = ctk.CTkFrame(master = containerb)
 
-image8 = ctk.CTkImage(dark_image=Image.open(r"assets\DC.png"),size=(230, 230))
+image8 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/DC.png"),size=(230, 230))
 
 def fh() :
     show_page2(page1, page2, imageprofile, image8, Teamname, name = "DELHI\nCAPITALS")
@@ -219,7 +220,7 @@ container8.grid(column = 3, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 # Back
 
 
-backim = ctk.CTkImage(dark_image=Image.open(r"assets\back.png"),size=(33, 35))
+backim = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/back.png"),size=(33, 35))
 back_frame = ctk.CTkFrame(page2)
 back_frame.grid(row = 0, column = 0,padx = 10, pady = 10, sticky = 'n')
 back = ctk.CTkButton(master = back_frame, text = "", image = backim, command = back, width = 40)
@@ -269,7 +270,7 @@ Totalam = ctk.CTkFrame(master=amount_frame, width=200, height=100)
 Totalam1 = ctk.CTkLabel(master = Totalam, text = "TOTAL AMOUNT")
 Totalam1.pack(side="top", padx = 20, pady = 10)
 af(Totalam1)
-imageam = ctk.CTkImage(dark_image=Image.open(r"assets\x.png"),size=(50, 50))
+imageam = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/x.png"),size=(50, 50))
 Totalam3 = ctk.CTkLabel(master = Totalam, text = "", image = imageam)
 Totalam3.pack(side="left", padx = 10, pady = 10)
 Totalam2 = ctk.CTkLabel(master = Totalam, text = "30,00,00,000")
@@ -283,7 +284,7 @@ Totalsp = ctk.CTkFrame(master=amount_frame, width=200, height=100)
 Totalsp1 = ctk.CTkLabel(master = Totalsp, text = "TOTAL SPENDING")
 af(Totalsp1)
 Totalsp1.pack(side="top", padx = 20, pady = 10)
-imagets = ctk.CTkImage(dark_image=Image.open(r"assets\down.png"),size=(50, 50))
+imagets = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/down.png"),size=(50, 50))
 Totalsp3 = ctk.CTkLabel(master = Totalsp, text = "", image = imagets)
 Totalsp3.pack(side="left", padx = 10, pady = 10)
 Totalsp2 = ctk.CTkLabel(master = Totalsp, text = "TOTAL SPENDING")
@@ -297,10 +298,10 @@ Bids = ctk.CTkFrame(master=amount_frame, width=200, height=100)
 Bids1 = ctk.CTkLabel(master = Bids, text = "BIDS LEFT")
 af(Bids1)
 Bids1.pack(side="top", padx = 30, pady = 10)
-imagebid = ctk.CTkImage(dark_image=Image.open(r"assets\bid.png"),size=(50, 50))
+imagebid = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/bid.png"),size=(50, 50))
 bid3 = ctk.CTkLabel(master = Bids, text = "", image = imagebid)
 bid3.pack(side="left", padx = 10, pady = 10)
-Bids2 = ctk.CTkLabel(master = Bids, text = "11", justify = "left")
+Bids2 = ctk.CTkLabel(master = Bids, text = "15", justify = "left")
 af(Bids2)
 Bids2.pack(side="left", padx = 10, pady = 10)
 Bids.grid(row=0,column=2,sticky='nsew',padx= 50, pady=30)
@@ -322,10 +323,11 @@ cplayer.grid(row=0,padx=50,pady=10,sticky='w')
 
 # Player Card
 
+image_player = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/profile.png"),size=(230, 230))
 player_detail_frame = ctk.CTkFrame(player_frame)
 player_detail_frame.grid(row=1, padx=50,pady=10)
 playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-playerimage.configure(image = image1)
+playerimage.configure(image = image_player)
 playerimage.pack(padx=20,pady=20)
 playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
 mf(playername)
@@ -368,7 +370,7 @@ af(cb1)
 cb1.pack(padx=20,pady=20,side="top")
 cb2 = ctk.CTkLabel(master = cb_frame, text = "Current Bidder")
 af(cb2)
-cbim = ctk.CTkImage(dark_image=Image.open(r"assets\pro.png"),size=(50, 50))
+cbim = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/pro.png"),size=(50, 50))
 cb3 = ctk.CTkLabel(master = cb_frame, text = "", image = cbim)
 cb3.pack(side="left", padx = 10, pady = 10)
 cb2.pack(padx=10,pady=20,side="left")
