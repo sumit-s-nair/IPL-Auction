@@ -38,6 +38,7 @@ def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
     page3.pack_forget()
     imgprof.configure(image=image)
     Teamname.configure(text = name)
+    return name
 
 def show_page3(page1,page2,page3):
     page1.pack_forget()
