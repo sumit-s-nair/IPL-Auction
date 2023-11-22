@@ -6,6 +6,7 @@ from PIL import Image
 from auction_lib import *
 import datetime
 import mysql
+import random
 
 # Functions
 
@@ -88,6 +89,9 @@ Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="tr
 
 # PAGE 1
 
+team = tk.StringVar(page2, )
+list_team = ["ROYAL\nCHALLENGERS\nBANGALORE", "CHENNAI\nSUPER KINGS", "MUMBAI\nINDIANS", "SUNRISERS\nHYDERABAD", ]
+
 # Title
 
 title_label = ctk.CTkLabel(master = page1, text = "CHOOSE YOUR TEAM")
@@ -111,6 +115,8 @@ image1 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/RCB.png"),siz
 
 def fa() :
     show_page2(page1, page2, page3, imageprofile, image1, Teamname, name = "ROYAL\nCHALLENGERS\nBANGALORE")
+    team = "ROYAL\nCHALLENGERS\nBANGALORE"
+    return team
 
 image_label1 = ctk.CTkButton(master = container1, image = image1, text = "", command = fa, fg_color = "transparent", hover_color = "#14375E")
 image_label1.pack(padx = 20, pady = 10)
@@ -128,6 +134,8 @@ image2 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/CSK.png"),siz
 
 def fb() :
     show_page2(page1, page2, page3, imageprofile, image2, Teamname, name = "CHENNAI\nSUPER KINGS")
+    team = "CHENNAI\nSUPER KINGS"
+    return team
     
 image_label2 = ctk.CTkButton(master = container2, image=image2, text = "", command = fb, fg_color = "transparent", hover_color = "#14375E")
 image_label2.pack(padx = 20, pady = 20)
@@ -145,6 +153,8 @@ image3 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/MI.png"),size
 
 def fc() :
     show_page2(page1, page2, page3, imageprofile, image3, Teamname, name = "MUMBAI\nINDIANS")
+    team = "MUMBAI\nINDIANS"
+    return team
 
 image_label3 = ctk.CTkButton(master = container3, image=image3, text = "", command = fc, fg_color = "transparent", hover_color = "#14375E")
 image_label3.pack(padx = 20, pady = 20)
@@ -160,6 +170,8 @@ container4 = ctk.CTkFrame(master = containera)
 
 def fd() :
     show_page2(page1, page2, page3, imageprofile, image4, Teamname, name = "SUNRISERS\nHYDERABAD")
+    team = "SUNRISERS\nHYDERABAD"
+    return team
 
 image4 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/SRH.png"),size=(230, 230))
 image_label4 = ctk.CTkButton(master = container4, image=image4, text = "", command = fd, fg_color = "transparent", hover_color = "#14375E")
@@ -187,6 +199,8 @@ image5 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/RR.png"),size
 
 def fe() :
     show_page2(page1, page2, page3, imageprofile, image5, Teamname, name = "RAJASTHAN\nROYALS")
+    team = "RAJASTHAN\nROYALS"
+    return team
 
 image_label5 = ctk.CTkButton(master = container5, image=image5, text = "", command = fe, fg_color = "transparent", hover_color = "#14375E")
 image_label5.pack(padx = 20, pady = 20)
@@ -247,6 +261,7 @@ bf(team8)
 team8.pack(pady=20)
 container8.grid(column = 3, row = 0, padx = 105, pady = 40, sticky = 'nsew')
 
+
 # PAGE 2
 
 # Back
@@ -274,7 +289,7 @@ Teamname.grid(column=0, pady = 10, padx = 20)
 # User Team
 
 player_list_frame = ctk.CTkScrollableFrame(profile_frame, height = 590, width = 250, label_text = "Player List", label_font = ("Portico Rounded", 20), label_fg_color = "#1F538D", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E")
-player_list_frame.grid(column=0,padx=20,pady=10)
+player_list_frame.grid(column=0,padx=20,pady=20)
 
 for i in range(1,16):
     playernameif = ctk.CTkFrame(master = player_list_frame)
