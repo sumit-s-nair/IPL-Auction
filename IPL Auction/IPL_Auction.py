@@ -7,6 +7,7 @@ from auction_lib import *
 import datetime
 import mysql
 import random
+import time
 
 # Functions
 
@@ -30,9 +31,15 @@ def back():
     windowb.attributes('-topmost',True)
     windowb.mainloop()
 
-    
+bidl = 15   
 def bid():
-    pass
+    x = int(bidno.get()) - 1
+    bidno.set(x)
+    time.sleep(1)
+    if x == 0:
+        bidb.configure(state = 'disabled')
+        time.sleep(5)
+        show_page3(page1, page2, page3)
 
 def pas():
     pass
@@ -88,10 +95,10 @@ imageprofile = ctk.CTkLabel(profile_frame, text = "")
 Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="transparent")
 
 # PAGE 1
-
-team = tk.StringVar(page2, )
-list_team = ["ROYAL\nCHALLENGERS\nBANGALORE", "CHENNAI\nSUPER KINGS", "MUMBAI\nINDIANS", "SUNRISERS\nHYDERABAD", ]
-
+team = tk.StringVar()
+list_team = ["ROYAL\nCHALLENGERS\nBANGALORE", "CHENNAI\nSUPER KINGS", "MUMBAI\nINDIANS", "SUNRISERS\nHYDERABAD", "RAJASTHAN\nROYALS", "KOLKATA\nKNIGHT RIDERS", "PUNJAB\nKINGS", "DELHI\nCAPITALS"]
+bidno = tk.StringVar()
+bidno.set(bidl)
 # Title
 
 title_label = ctk.CTkLabel(master = page1, text = "CHOOSE YOUR TEAM")
@@ -115,8 +122,8 @@ image1 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/RCB.png"),siz
 
 def fa() :
     show_page2(page1, page2, page3, imageprofile, image1, Teamname, name = "ROYAL\nCHALLENGERS\nBANGALORE")
-    team = "ROYAL\nCHALLENGERS\nBANGALORE"
-    return team
+    team.set("ROYAL\nCHALLENGERS\nBANGALORE")
+    list_team.remove("ROYAL\nCHALLENGERS\nBANGALORE")
 
 image_label1 = ctk.CTkButton(master = container1, image = image1, text = "", command = fa, fg_color = "transparent", hover_color = "#14375E")
 image_label1.pack(padx = 20, pady = 10)
@@ -134,8 +141,8 @@ image2 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/CSK.png"),siz
 
 def fb() :
     show_page2(page1, page2, page3, imageprofile, image2, Teamname, name = "CHENNAI\nSUPER KINGS")
-    team = "CHENNAI\nSUPER KINGS"
-    return team
+    team.set("CHENNAI\nSUPER KINGS")
+    list_team.remove("CHENNAI\nSUPER KINGS")
     
 image_label2 = ctk.CTkButton(master = container2, image=image2, text = "", command = fb, fg_color = "transparent", hover_color = "#14375E")
 image_label2.pack(padx = 20, pady = 20)
@@ -153,8 +160,8 @@ image3 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/MI.png"),size
 
 def fc() :
     show_page2(page1, page2, page3, imageprofile, image3, Teamname, name = "MUMBAI\nINDIANS")
-    team = "MUMBAI\nINDIANS"
-    return team
+    team.set("MUMBAI\nINDIANS")
+    list_team.remove("MUMBAI\nINDIANS")
 
 image_label3 = ctk.CTkButton(master = container3, image=image3, text = "", command = fc, fg_color = "transparent", hover_color = "#14375E")
 image_label3.pack(padx = 20, pady = 20)
@@ -170,8 +177,8 @@ container4 = ctk.CTkFrame(master = containera)
 
 def fd() :
     show_page2(page1, page2, page3, imageprofile, image4, Teamname, name = "SUNRISERS\nHYDERABAD")
-    team = "SUNRISERS\nHYDERABAD"
-    return team
+    team.set("SUNRISERS\nHYDERABAD")
+    list_team.remove("SUNRISERS\nHYDERABAD")
 
 image4 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/SRH.png"),size=(230, 230))
 image_label4 = ctk.CTkButton(master = container4, image=image4, text = "", command = fd, fg_color = "transparent", hover_color = "#14375E")
@@ -199,8 +206,8 @@ image5 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/RR.png"),size
 
 def fe() :
     show_page2(page1, page2, page3, imageprofile, image5, Teamname, name = "RAJASTHAN\nROYALS")
-    team = "RAJASTHAN\nROYALS"
-    return team
+    team.set("RAJASTHAN\nROYALS")
+    list_team.remove("RAJASTHAN\nROYALS")
 
 image_label5 = ctk.CTkButton(master = container5, image=image5, text = "", command = fe, fg_color = "transparent", hover_color = "#14375E")
 image_label5.pack(padx = 20, pady = 20)
@@ -218,6 +225,8 @@ image6 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/KKR.png"),siz
 
 def ff() :
     show_page2(page1, page2, page3, imageprofile, image6, Teamname, name = "KOLKATA\nKNIGHT RIDERS")
+    team.set("KOLKATA\nKNIGHT RIDERS")
+    list_team.remove("KOLKATA\nKNIGHT RIDERS")
 
 image_label6 = ctk.CTkButton(master = container6, image=image6, text = "", command = ff, fg_color = "transparent", hover_color = "#14375E")
 image_label6.pack(padx = 20, pady = 20)
@@ -235,6 +244,8 @@ image7 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/PK.png"),size
 
 def fg() :
     show_page2(page1, page2, page3, imageprofile, image7, Teamname, name = "PUNJAB\nKINGS")
+    team.set("PUNJAB\nKINGS")
+    list_team.remove("PUNJAB\nKINGS")
 
 image_label7 = ctk.CTkButton(master = container7, image=image7, text = "", command = fg, fg_color = "transparent", hover_color = "#14375E")
 image_label7.pack(padx = 20, pady = 20)
@@ -252,6 +263,8 @@ image8 = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/DC.png"),size
 
 def fh() :
     show_page2(page1, page2, page3, imageprofile, image8, Teamname, name = "DELHI\nCAPITALS")
+    team.set("DELHI\nCAPITALS")
+    list_team.remove("DELHI\nCAPITALS")
 
 image_label8 = ctk.CTkButton(master = container8, image=image8, text = "", command = fh, fg_color = "transparent", hover_color = "#14375E")
 image_label8.pack(padx = 20, pady = 20)
@@ -347,7 +360,7 @@ Bids1.pack(side="top", padx = 30, pady = 10)
 imagebid = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/bid.png"),size=(50, 50))
 bid3 = ctk.CTkLabel(master = Bids, text = "", image = imagebid)
 bid3.pack(side="left", padx = 10, pady = 10)
-Bids2 = ctk.CTkLabel(master = Bids, text = "15", justify = "left")
+Bids2 = ctk.CTkLabel(master = Bids, textvariable=bidno, justify = "left")
 af(Bids2)
 Bids2.pack(side="left", padx = 10, pady = 10)
 Bids.grid(row=0,column=2,sticky='nsew',padx= 50, pady=30)
@@ -441,15 +454,15 @@ b_frame.grid(row=4,column=0, padx=20, pady = 20)
 
 # Bid Button
 
-bid = ctk.CTkButton(master = b_frame, text = "   BID   ", command=bid, fg_color = "#2FA572", hover_color = "#177D51")
-bid.pack(side='left',pady=20,padx= 30)
-mf(bid)
+bidb = ctk.CTkButton(master = b_frame, text = "   BID   ", command=bid, fg_color = "#2FA572", hover_color = "#177D51")
+bidb.pack(side='left',pady=20,padx= 30)
+mf(bidb)
 
 # Pass Button
 
-pas = ctk.CTkButton(master = b_frame, text = " PASS ", command=pas, fg_color = "#840000", hover_color = "#630101")
-pas.pack(side='right',pady=20,padx =30)
-mf(pas)
+pasb = ctk.CTkButton(master = b_frame, text = " PASS ", command=pas, fg_color = "#840000", hover_color = "#630101")
+pasb.pack(side='right',pady=20,padx =30)
+mf(pasb)
 
 # Next
 
