@@ -5,9 +5,14 @@ import tkinter.font
 from PIL import Image
 from auction_lib import *
 import datetime
-import mysql
+import mysql.connector
 import random
 import time
+
+connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
+cursor = connection.cursor()
+x = "use iplplayers;"
+cursor.execute(x)
 
 # Functions
 
@@ -35,7 +40,7 @@ bidl = 15
 def bid():
     x = int(bidno.get()) - 1
     bidno.set(x)
-    time.sleep(1)
+    time.sleep(0.25)
     if x == 0:
         bidb.configure(state = 'disabled')
         time.sleep(5)
