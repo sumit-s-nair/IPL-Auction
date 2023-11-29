@@ -2,12 +2,13 @@ import tkinter as tk
 from tkinter import ttk, PhotoImage
 import customtkinter as ctk
 import tkinter.font
-from PIL import Image
+from PIL import Image, ImageTk
 from auction_lib import *
 import datetime
 import mysql.connector
 import random
 import time
+import io
 
 connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
 cursor = connection.cursor()
@@ -15,6 +16,28 @@ x = "use iplplayers;"
 cursor.execute(x)
 
 # Functions
+
+def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
+    page1.pack_forget()
+    page2.pack()
+    page3.pack_forget()
+    imgprof.configure(image=image)
+    Teamname.configure(text = name)
+    
+def bid_start():
+    while int(b) > 0:
+        cursor.execute("select * from auction;")
+        results = cursor.fetchone()
+        for row in results:
+            name = row [0]
+            am = row [1]
+            data = row [2]
+            pic = ctk.CTkImage(dark_image=Image.open(data),size=(230, 230))
+            pn.set(name)
+            bidam.set(am)
+            playerimage.configure(image = pic)
+            # time.sleep(30)
+            
 
 def back():
     def yes1():
@@ -42,8 +65,8 @@ def bid():
     bidno.set(x)
     time.sleep(0.25)
     if x == 0:
+        time.sleep(1)
         bidb.configure(state = 'disabled')
-        time.sleep(5)
         show_page3(page1, page2, page3)
 
 def pas():
@@ -104,6 +127,12 @@ team = tk.StringVar()
 list_team = ["ROYAL\nCHALLENGERS\nBANGALORE", "CHENNAI\nSUPER KINGS", "MUMBAI\nINDIANS", "SUNRISERS\nHYDERABAD", "RAJASTHAN\nROYALS", "KOLKATA\nKNIGHT RIDERS", "PUNJAB\nKINGS", "DELHI\nCAPITALS"]
 bidno = tk.StringVar()
 bidno.set(bidl)
+bidam = tk.StringVar()
+nbidam = tk.StringVar()
+q = 0
+nbidam.set(int(q)*0.1 + int(q))
+pn = tk.StringVar()
+
 # Title
 
 title_label = ctk.CTkLabel(master = page1, text = "CHOOSE YOUR TEAM")
@@ -391,9 +420,8 @@ image_player = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/profile
 player_detail_frame = ctk.CTkFrame(player_frame)
 player_detail_frame.grid(row=1, padx=50,pady=10)
 playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-playerimage.configure(image = image_player)
 playerimage.pack(padx=20,pady=20)
-playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
+playername = ctk.CTkLabel(master=player_detail_frame, textvariable = pn)
 mf(playername)
 playername.pack(padx= 20, pady= 20)
 
@@ -419,7 +447,7 @@ ca_frame.grid(row=0,column=0, padx=20, pady = 20)
 ca1 = ctk.CTkLabel(master = ca_frame, text = "CURRENT BID AMOUNT")
 af(ca1)
 ca1.pack(padx=20,pady=20,side="top")
-ca2 = ctk.CTkLabel(master = ca_frame, text = "Current Bid Amount")
+ca2 = ctk.CTkLabel(master = ca_frame, textvariable = bidam)
 af(ca2)
 ca3 = ctk.CTkLabel(master = ca_frame, text = "", image = imageam)
 ca3.pack(side="left", padx = 10, pady = 10)
@@ -446,12 +474,24 @@ nb_frame.grid(row=0,column=2, padx=20, pady = 20)
 nb1 = ctk.CTkLabel(master = nb_frame, text = "NEXT BID AMOUNT")
 af(nb1)
 nb1.pack(padx=20,pady=20,side="top")
-nb2 = ctk.CTkLabel(master = nb_frame, text = "Next Bid Amount")
+nb2 = ctk.CTkLabel(master = nb_frame, textvariable = nbidam)
 af(nb2)
 nb3 = ctk.CTkLabel(master = nb_frame, text = "", image = imageam)
 nb3.pack(side="left", padx = 10, pady = 10)
 nb2.pack(padx=10,pady=20,side="left")
 
+b = bidno.get()
+# while int(b) > 0:
+#         cursor.execute("select * from auction;")
+#         results = cursor.fetchone()
+#         name = results[0]
+#         am = results[1]
+#             #pic = Image.open(io.BytesIO(data))
+#             #pic = ImageTk.PhotoImage(pic)
+#         pn.set(name)
+#         bidam.set(am)
+#             #playerimage.configure(image = pic)
+#             # time.sleep(30)
 # Buttons
 
 b_frame = ctk.CTkFrame(player_frame)
