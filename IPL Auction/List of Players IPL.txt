@@ -2,124 +2,124 @@ List of Players:
 
 Player - Base Price
 
-1) Abhishek Sharma
-2) Akash Deep
-3) Anuj Rawat
+1) Abhishek Sharma - 2000000
+2) Akash Deep - 2000000
+3) Anuj Rawat - 2000000
 4) Jofra Archer
-5) Arjun Tendulkar
-6) Avinash Singh
+5) Arjun Tendulkar - 2000000
+6) Avinash Singh - 2000000
 7) Jason Beherendorff
 8) Bhuveneshwar Kumar
-9) Michael Bracewell
-10) Devald Brevis
-11) Deepak Chahar
-12) Devon Conway
-13) David Willey
-14) Tushar Deshpande
-15) MS Dhoni
-16) Dinesh Karthik
-17) Fazal-haq-Farooqi
-18) Finn Allen
-19) Glenn Philips
-20) Cameron Green
-21) Harshal Patel
-22) Ravindra Jadeja
-23) Kyle Jamieson
-24) Kartik Tyagi
-25) Siddharth Kaul
-26) Ishan Kishan
-27) Henrick Klaasen
-28) Kumar Karthikeya
-29) Akash Madhwal
-30) Marco Jansen
-31) Aiden Markram
-32) Glenn Maxwell
-33) Mayank Markande
-34) Mayank Agarwal
-35) Moenn Ali
-36) T Natarajan
-37) Matheesha Pathirana
-38) Piyush Chawla
-39) Faf Du Plessis
-40) Ajinkya Rahane
-41) Rahul Tripathi
-42) Ramandeep Singh
-43) Adil Rashid
-44) Ambati Rayadu
-45) Rohit Sharma
-46) Ruturaj Gaikwad
-47) Mitchell Santner
-48) Shivam Dube
-49) Ben Stokes
-50) Mohammed Siraj
-51) Suryakumar Yadav
-52) Suyash Prabhudessai
-53) Mahesh Theekshana
-54) Tim David
-55) Tilak Verma
-56) Umran Malik
-57) Reece Topley
-58) Virat Kohli
-59) Washington Sundar
-60) Nihal Wadhera
-61) Axar Patel
-62) Yash Dhull
-63) Ishant Sharma
-64) Khaleel Ahmed
-65) Kuldeep Yadav
-66) Manish Pandey
-67) Mitchell Marsh
-68) Mustafizur Rahman
-69) Lungi Ngidi
-70) Andrew Nortje
-71) Rovman Powell
-72) Prithvi Shaw
-73) Riley Roussouw
-74) Sarfaraz Khan
-75) David Warner
-76) Varun Chakravarthy
-77) Mandeep Singh
-78) Sunil Narine
-79) Nitish Rana
-80) Lockie Ferguson
-81) Rinku Singh
-82) Jason Roy
-83) Andrew Russell
-84) Shakib Al Hasan
-85) Shardul Thakur
-86) Shreyas Iyer
-87) Tim Southee
-88) Umesh Yadav
-89) Venkatesh Iyer
-90) David Wiese
-91) Arshdeep Singh
-92) Johnny Bairstow
-93) Sam Curran
-94) Shikhar Dhawan
-95) Jitesh Sharma
-96) Liam Livingstone
-97) Prabhsimran Singh
-98) Kagiso Rabada
-99) Rahul Chahar
-100) Sikandar Raza
-101) Rishi Dhawan
-102) Shahrukh Khan
-103) Bhanuka Rajapaksha
-104) Harpreet Brar
-105) Vidwath Kaverappa
-106) Ravichandran Ashwin
-107) Trent Boult
-108) Jos Buttler
-109) Shimron Hetmyer
-110) Jason Holder
-111) Yashashwi Jaiswal
-112) Murugan Ashwin
-113) Devdutt Padikkal
-114) Riyan Parag
-115) Joe Root
-116) Navdeep Saini
-117) Sanju Samson
-118) Sandeep Sharma
-119) Yuzvendra Chahal
-120) Adam Zampa
+9) Michael Bracewell - 2000000
+10) Deepak Chahar
+11) Devon Conway
+12) David Willey - 2000000
+13) Tushar Deshpande
+14) MS Dhoni - 20000000
+15) Dinesh Karthik
+16) Fazal-haq-Farooqi - 2000000
+17) Finn Allen - 2000000
+18) Glenn Philips - 2000000
+19) Cameron Green
+20) Harshal Patel
+21) Ravindra Jadeja - 20000000
+22) Kyle Jamieson - 2000000
+23) Kartik Tyagi - 2000000
+24) Siddharth Kaul - 2000000
+25) Ishan Kishan
+26) Henrick Klaasen
+27) Kumar Karthikeya - 2000000
+28) Akash Madhwal
+29) Marco Jansen - 2000000
+30) Aiden Markram
+31) Glenn Maxwell
+32) Mayank Markande - 2000000
+33) Mayank Agarwal
+34) Moenn Ali
+35) T Natarajan
+36) Matheesha Pathirana
+37) Piyush Chawla
+38) Faf Du Plessis
+39) Ajinkya Rahane
+40) Rahul Tripathi
+41) Ramandeep Singh - 2000000
+42) Adil Rashid
+43) Ambati Rayadu
+44) Rohit Sharma - 20000000
+45) Ruturaj Gaikwad
+46) Mitchell Santner
+47) Shivam Dube
+48) Ben Stokes
+49) Mohammed Siraj
+50) Suryakumar Yadav
+51) Suyash Prabhudessai - 2000000
+52) Mahesh Theekshana - 2000000
+53) Tim David
+54) Tilak Verma
+55) Umran Malik - 2000000
+56) Reece Topley - 2000000
+57) Virat Kohli - 20000000
+58) Washington Sundar - 2000000
+59) Nihal Wadhera - 2000000
+60) Axar Patel
+61) Yash Dhull - 2000000
+62) Ishant Sharma
+63) Khaleel Ahmed - 2000000
+64) Kuldeep Yadav
+65) Manish Pandey
+66) Mitchell Marsh
+67) Mustafizur Rahman
+68) Lungi Ngidi - 2000000
+69) Andrew Nortje
+70) Rovman Powell - 2000000
+71) Prithvi Shaw
+72) Riley Roussouw - 2000000
+73) Sarfaraz Khan - 2000000
+74) David Warner - 20000000
+75) Varun Chakravarthy - 2000000
+76) Mandeep Singh - 2000000
+77) Sunil Narine
+78) Nitish Rana
+79) Lockie Ferguson
+80) Rinku Singh
+81) Jason Roy - 2000000
+82) Andrew Russell
+83) Shakib Al Hasan
+84) Shardul Thakur
+85) Shreyas Iyer
+86) Tim Southee
+87) Umesh Yadav
+88) Venkatesh Iyer - 5000000
+89) David Wiese - 2000000
+90) Arshdeep Singh - 2000000
+91) Johnny Bairstow
+92) Sam Curran
+93) Shikhar Dhawan - 2000000
+94) Jitesh Sharma - 2000000
+95) Liam Livingstone
+96) Prabhsimran Singh - 2000000
+97) Kagiso Rabada
+98) Rahul Chahar
+99) Sikandar Raza - 2000000
+100) Rishi Dhawan - 2000000
+101) Shahrukh Khan - 2000000
+102) Bhanuka Rajapaksha - 2000000
+103) Harpreet Brar - 2000000
+104) Vidwath Kaverappa - 2000000
+105) Ravichandran Ashwin
+106) Trent Boult
+107) Jos Buttler
+108) Shimron Hetmyer
+109) Jason Holder
+110) Yashashwi Jaiswal
+111) Murugan Ashwin
+112) Devdutt Padikkal
+113) Riyan Parag
+114) Joe Root - 2000000
+115) Navdeep Saini
+116) Sanju Samson
+117) Sandeep Sharma
+118) Yuzvendra Chahal - 20000000
+119) Adam Zampa
+120) Devald Brevis - 2000000
  
