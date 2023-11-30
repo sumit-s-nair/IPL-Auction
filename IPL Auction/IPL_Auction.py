@@ -9,12 +9,14 @@ import mysql.connector
 import random
 import time
 import io
-import asyncio
+import base64
 
 connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
 cursor = connection.cursor()
 x = "use iplplayers;"
 cursor.execute(x)
+cursor.execute("select * from auction;")
+results = cursor.fetchall()
 
 # Functions
 
@@ -24,24 +26,24 @@ def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
     page3.pack_forget()
     imgprof.configure(image=image)
     Teamname.configure(text = name)
-    asyncio.run(bid_start())
+    bid_start()
     
-async def bid_start():
-    cursor.execute("select * from auction;")
-    results = cursor.fetchall()
-    for row in results:
-        name = row [0]
-        am = row [1]
-        print(name)
-        print(am)
-        data = row [2]
-        pic = ctk.CTkImage(dark_image=Image.open(r"%s"%data),size=(230, 230))
-        pn.set(name)
-        bidam.set(am)
-        playerimage.configure(image = pic)
-        await asyncio.sleep(10)
-        
-        # # time.sleep(30)
+m = ctk.CTkImage(dark_image=Image.open(r"C:\Users\sumit\OneDrive\Documents\GitHub\IPLAuction\IPL Auction\assets\profile.png"),size = (230,230))
+def bid_start():
+    x = int(player_index.get())
+    name = results[x][0]
+    am = results[x][1]
+    global new_image
+    new_image_path = results[x][2]
+    base64_data = base64.b64encode(new_image_path).decode('utf-8')
+    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
+    new_image = ctk.CTkImage(dark_image = imagep)
+    playerimage.configure(image = new_image)
+    pn.set(name)
+    bidam.set(am)
+    x += 1
+    player_index.set(x)
+    window.update()
 
 def back():
     def yes1():
@@ -68,6 +70,7 @@ def bid():
     x = int(bidno.get()) - 1
     bidno.set(x)
     time.sleep(0.25)
+    bid_start()
     if x == 0:
         time.sleep(1)
         bidb.configure(state = 'disabled')
@@ -127,6 +130,7 @@ imageprofile = ctk.CTkLabel(profile_frame, text = "")
 Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="transparent")
 
 # PAGE 1
+player_index = tk.StringVar(value=0)
 team = tk.StringVar()
 list_team = ["ROYAL\nCHALLENGERS\nBANGALORE", "CHENNAI\nSUPER KINGS", "MUMBAI\nINDIANS", "SUNRISERS\nHYDERABAD", "RAJASTHAN\nROYALS", "KOLKATA\nKNIGHT RIDERS", "PUNJAB\nKINGS", "DELHI\nCAPITALS"]
 bidno = tk.StringVar()
@@ -423,7 +427,7 @@ cplayer.grid(row=0,padx=50,pady=10,sticky='w')
 image_player = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/profile.png"),size=(230, 230))
 player_detail_frame = ctk.CTkFrame(player_frame)
 player_detail_frame.grid(row=1, padx=50,pady=10)
-playerimage = ctk.CTkLabel(master=player_detail_frame, text = "",)
+playerimage = ctk.CTkLabel(master=player_detail_frame, text = "", image = image_player)
 playerimage.pack(padx=20,pady=20)
 playername = ctk.CTkLabel(master=player_detail_frame, textvariable = pn)
 mf(playername)
@@ -483,20 +487,6 @@ af(nb2)
 nb3 = ctk.CTkLabel(master = nb_frame, text = "", image = imageam)
 nb3.pack(side="left", padx = 10, pady = 10)
 nb2.pack(padx=10,pady=20,side="left")
-
-b = bidno.get()
-# while int(b) > 0:
-#         cursor.execute("select * from auction;")
-#         results = cursor.fetchone()
-#         name = results[0]
-#         am = results[1]
-#             #pic = Image.open(io.BytesIO(data))
-#             #pic = ImageTk.PhotoImage(pic)
-#         pn.set(name)
-#         bidam.set(am)
-#             #playerimage.configure(image = pic)
-#             # time.sleep(30)
-# Buttons
 
 b_frame = ctk.CTkFrame(player_frame)
 b_frame.grid(row=4,column=0, padx=20, pady = 20)
