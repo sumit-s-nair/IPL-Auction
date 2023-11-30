@@ -28,22 +28,20 @@ def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
     Teamname.configure(text = name)
     bid_start()
     
-m = ctk.CTkImage(dark_image=Image.open(r"C:\Users\sumit\OneDrive\Documents\GitHub\IPLAuction\IPL Auction\assets\profile.png"),size = (230,230))
 def bid_start():
-    x = int(player_index.get())
-    name = results[x][0]
-    am = results[x][1]
-    global new_image
-    new_image_path = results[x][2]
+    global image_player
+    y = int(player_index.get())
+    name = results[y][0]
+    am = results[y][1]
+    new_image_path = results[y][2]
     base64_data = base64.b64encode(new_image_path).decode('utf-8')
     imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
-    new_image = ctk.CTkImage(dark_image = imagep)
-    playerimage.configure(image = new_image)
+    new_image = ctk.CTkImage(dark_image = imagep, size = (230,230))
+    playerimage._image = new_image
     pn.set(name)
     bidam.set(am)
-    x += 1
-    player_index.set(x)
-    window.update()
+    y += 1
+    player_index.set(y)
 
 def back():
     def yes1():
@@ -64,6 +62,7 @@ def back():
     frame.grid(row = 1, column = 0, sticky = 'ew', padx = 10, pady = 10)
     windowb.attributes('-topmost',True)
     windowb.mainloop()
+    player_index.set(value=0)
 
 bidl = 15   
 def bid():
@@ -138,7 +137,7 @@ bidno.set(bidl)
 bidam = tk.StringVar()
 nbidam = tk.StringVar()
 q = 0
-nbidam.set(int(q)*0.1 + int(q))
+nbidam.set(q*0.1 + q)
 pn = tk.StringVar()
 
 # Title
@@ -427,7 +426,7 @@ cplayer.grid(row=0,padx=50,pady=10,sticky='w')
 image_player = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/profile.png"),size=(230, 230))
 player_detail_frame = ctk.CTkFrame(player_frame)
 player_detail_frame.grid(row=1, padx=50,pady=10)
-playerimage = ctk.CTkLabel(master=player_detail_frame, text = "", image = image_player)
+playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
 playerimage.pack(padx=20,pady=20)
 playername = ctk.CTkLabel(master=player_detail_frame, textvariable = pn)
 mf(playername)

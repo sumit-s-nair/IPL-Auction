@@ -1,6 +1,7 @@
 # Functions for IPL AUCTION
 import customtkinter as ctk
 import tkinter as tk
+import time
 
 
 def show_page1(page1,page2,page3):
@@ -31,14 +32,6 @@ def sf(button):
 def mf(button):
     af = ctk.CTkFont( family = "Portico light", size = 25, weight = "normal")
     button.configure(font = af)
-
-def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
-    page1.pack_forget()
-    page2.pack()
-    page3.pack_forget()
-    imgprof.configure(image=image)
-    Teamname.configure(text = name)
-    return name
 
 def show_page3(page1,page2,page3):
     page1.pack_forget()
