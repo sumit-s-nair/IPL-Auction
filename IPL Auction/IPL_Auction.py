@@ -9,6 +9,7 @@ import mysql.connector
 import random
 import time
 import io
+import asyncio
 
 connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
 cursor = connection.cursor()
@@ -23,21 +24,24 @@ def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
     page3.pack_forget()
     imgprof.configure(image=image)
     Teamname.configure(text = name)
+    asyncio.run(bid_start())
     
-def bid_start():
-    while int(b) > 0:
-        cursor.execute("select * from auction;")
-        results = cursor.fetchone()
-        for row in results:
-            name = row [0]
-            am = row [1]
-            data = row [2]
-            pic = ctk.CTkImage(dark_image=Image.open(data),size=(230, 230))
-            pn.set(name)
-            bidam.set(am)
-            playerimage.configure(image = pic)
-            # time.sleep(30)
-            
+async def bid_start():
+    cursor.execute("select * from auction;")
+    results = cursor.fetchall()
+    for row in results:
+        name = row [0]
+        am = row [1]
+        print(name)
+        print(am)
+        data = row [2]
+        pic = ctk.CTkImage(dark_image=Image.open(r"%s"%data),size=(230, 230))
+        pn.set(name)
+        bidam.set(am)
+        playerimage.configure(image = pic)
+        await asyncio.sleep(10)
+        
+        # # time.sleep(30)
 
 def back():
     def yes1():
@@ -419,7 +423,7 @@ cplayer.grid(row=0,padx=50,pady=10,sticky='w')
 image_player = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/profile.png"),size=(230, 230))
 player_detail_frame = ctk.CTkFrame(player_frame)
 player_detail_frame.grid(row=1, padx=50,pady=10)
-playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
+playerimage = ctk.CTkLabel(master=player_detail_frame, text = "",)
 playerimage.pack(padx=20,pady=20)
 playername = ctk.CTkLabel(master=player_detail_frame, textvariable = pn)
 mf(playername)
