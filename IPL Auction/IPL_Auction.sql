@@ -1,0 +1,5 @@
+#CREATE DATABASE IPL_Auction;
+USE IPL_Auction;
+
+SELECT *
+FROM Players;
