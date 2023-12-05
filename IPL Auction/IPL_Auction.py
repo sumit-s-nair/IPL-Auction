@@ -10,6 +10,11 @@ import random
 import time
 import io
 import base64
+import gc
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
+gc.disable()
 
 connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
 cursor = connection.cursor()
@@ -17,6 +22,7 @@ x = "use iplplayers;"
 cursor.execute(x)
 cursor.execute("select * from auction;")
 results = cursor.fetchall()
+
 
 # Functions
 
@@ -29,19 +35,26 @@ def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
     bid_start()
     
 def bid_start():
-    global image_player
     y = int(player_index.get())
-    name = results[y][0]
-    am = results[y][1]
-    new_image_path = results[y][2]
-    base64_data = base64.b64encode(new_image_path).decode('utf-8')
-    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
-    new_image = ctk.CTkImage(dark_image = imagep, size = (230,230))
-    playerimage._image = new_image
-    pn.set(name)
+    global namep, imagep
+    namep = results[y][0]
+    amou = results[y][1]
+    am = str(float(amou)/10000000)+" Cr"
+    
+    try:
+        new_image_path = results[y][2]
+        print(type(new_image_path))  
+        base64_data = base64.b64encode(new_image_path).decode('utf-8')
+        imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
+        image = ctk.CTkImage(dark_image=imagep,size=(230,230))
+        playerimage1.configure(image = image)
+    except Exception as e:
+        print(e)
+    pn.set(namep)
     bidam.set(am)
     y += 1
     player_index.set(y)
+    window.update_idletasks()
 
 def back():
     def yes1():
@@ -64,19 +77,37 @@ def back():
     windowb.mainloop()
     player_index.set(value=0)
 
-bidl = 15   
+bidl = 15  
 def bid():
     x = int(bidno.get()) - 1
     bidno.set(x)
+    z = float(bidam.get()[0:-3:])
+    m = float(tspent.get()[0:-3:])
+    a = str(round(z + m,1))+" Cr"
+    tspent.set(a)
     time.sleep(0.25)
-    bid_start()
+    name = team.get()
+    for i in d:
+        if name == i:
+            cursor.execute('insert into %s select * from auction where Name = "%s"' %(d[name],namep))
+            connection.commit()
+    playernameif = ctk.CTkFrame(master = player_list_frame)
+    playernameif.pack(padx=10,pady=5)
+    e = pn.get()
+    playernamei = ctk.CTkLabel(master = playernameif,text=e)
+    pf(playernamei)
+    playernamei.pack(padx=30,pady=10)
+    bid_start()    
     if x == 0:
         time.sleep(1)
         bidb.configure(state = 'disabled')
         show_page3(page1, page2, page3)
+    t = team.get()
+    cb2.configure(text = t)
 
 def pas():
-    pass
+    x = random.choice(list_team)
+    print(x)
 
 def nex():
     def yes1():
@@ -128,9 +159,22 @@ profile_frame = ctk.CTkFrame(page2)
 imageprofile = ctk.CTkLabel(profile_frame, text = "")
 Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="transparent")
 
+im_list = []
+for i in results: 
+    y = 0
+    new_image_path = results[y][2]  
+    base64_data = base64.b64encode(new_image_path).decode('utf-8')
+    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
+    new_image = ctk.CTkImage(dark_image=imagep)
+    im_list.append(new_image)
+    y+=1
+
+im1 = im_list[0]
+im2 = im_list[1]
 # PAGE 1
 player_index = tk.StringVar(value=0)
 team = tk.StringVar()
+d = {"ROYAL\nCHALLENGERS\nBANGALORE" : "rcb", "CHENNAI\nSUPER KINGS" : "csk", "MUMBAI\nINDIANS" : "mi", "SUNRISERS\nHYDERABAD" : "srh", "RAJASTHAN\nROYALS" : "rr", "KOLKATA\nKNIGHT RIDERS" : "kkr", "PUNJAB\nKINGS" : "pk", "DELHI\nCAPITALS" : "dc"}
 list_team = ["ROYAL\nCHALLENGERS\nBANGALORE", "CHENNAI\nSUPER KINGS", "MUMBAI\nINDIANS", "SUNRISERS\nHYDERABAD", "RAJASTHAN\nROYALS", "KOLKATA\nKNIGHT RIDERS", "PUNJAB\nKINGS", "DELHI\nCAPITALS"]
 bidno = tk.StringVar()
 bidno.set(bidl)
@@ -138,7 +182,11 @@ bidam = tk.StringVar()
 nbidam = tk.StringVar()
 q = 0
 nbidam.set(q*0.1 + q)
+tspent = tk.StringVar()
+inti = "0.0 Cr"
+tspent.set(inti)
 pn = tk.StringVar()
+
 
 # Title
 
@@ -345,13 +393,6 @@ Teamname.grid(column=0, pady = 10, padx = 20)
 player_list_frame = ctk.CTkScrollableFrame(profile_frame, height = 590, width = 250, label_text = "Player List", label_font = ("Portico Rounded", 20), label_fg_color = "#1F538D", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E")
 player_list_frame.grid(column=0,padx=20,pady=20)
 
-for i in range(1,16):
-    playernameif = ctk.CTkFrame(master = player_list_frame)
-    playernameif.pack(padx=10,pady=5)
-    playernamei = ctk.CTkLabel(master = playernameif,text="Player %i" %i)
-    pf(playernamei)
-    playernamei.pack(padx=30,pady=10)
-
 # Auction
 
 auction_frame = ctk.CTkFrame(page2)
@@ -373,7 +414,7 @@ af(Totalam1)
 imageam = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/x.png"),size=(50, 50))
 Totalam3 = ctk.CTkLabel(master = Totalam, text = "", image = imageam)
 Totalam3.pack(side="left", padx = 10, pady = 10)
-Totalam2 = ctk.CTkLabel(master = Totalam, text = "30,00,00,000")
+Totalam2 = ctk.CTkLabel(master = Totalam, text = "30 Cr")
 af(Totalam2)
 Totalam2.pack(side="right", padx = 10, pady = 10)
 Totalam.grid(row=0, column=0,sticky='nsew', pady=30, padx=50)
@@ -387,7 +428,7 @@ Totalsp1.pack(side="top", padx = 20, pady = 10)
 imagets = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/down.png"),size=(50, 50))
 Totalsp3 = ctk.CTkLabel(master = Totalsp, text = "", image = imagets)
 Totalsp3.pack(side="left", padx = 10, pady = 10)
-Totalsp2 = ctk.CTkLabel(master = Totalsp, text = "TOTAL SPENDING")
+Totalsp2 = ctk.CTkLabel(master = Totalsp, textvariable = tspent)
 af(Totalsp2)
 Totalsp2.pack(side="right", padx = 10, pady = 10)
 Totalsp.grid(row=0,column=1,sticky='nsew',padx= 50, pady=30)
@@ -426,8 +467,8 @@ cplayer.grid(row=0,padx=50,pady=10,sticky='w')
 image_player = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/profile.png"),size=(230, 230))
 player_detail_frame = ctk.CTkFrame(player_frame)
 player_detail_frame.grid(row=1, padx=50,pady=10)
-playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-playerimage.pack(padx=20,pady=20)
+playerimage1 = ctk.CTkLabel(master=player_detail_frame, text = "", image=image_player)
+playerimage1.pack(padx=20,pady=20)
 playername = ctk.CTkLabel(master=player_detail_frame, textvariable = pn)
 mf(playername)
 playername.pack(padx= 20, pady= 20)
@@ -467,7 +508,7 @@ cb_frame.grid(row=0,column=1, padx=20, pady = 20)
 cb1 = ctk.CTkLabel(master = cb_frame, text = "CURRENT BIDDER")
 af(cb1)
 cb1.pack(padx=20,pady=20,side="top")
-cb2 = ctk.CTkLabel(master = cb_frame, text = "Current Bidder")
+cb2 = ctk.CTkLabel(master = cb_frame, text = "Current\nBidder")
 af(cb2)
 cbim = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/pro.png"),size=(50, 50))
 cb3 = ctk.CTkLabel(master = cb_frame, text = "", image = cbim)
@@ -518,13 +559,18 @@ team_list_frame.grid(column=0,padx=20,pady=10)
 rcb_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "ROYAL CHALLENGERS BANGALORE", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
 rcb_team_list_frame.pack(padx=20,pady=10)
 
-for i in range(1,16):
+for i in range(15):
     player_detail_frame = ctk.CTkFrame(rcb_team_list_frame)
     player_detail_frame.pack(padx=50,pady=10, side = 'left')
     playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
     playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
+    n = results[i][0]
+    new_image_path = results[i][2]  
+    base64_data = base64.b64encode(new_image_path).decode('utf-8')
+    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
+    new_image = ctk.CTkImage(dark_image=imagep, size=(230,230))
+    playername = ctk.CTkLabel(master=player_detail_frame, text=n)
+    playerimage.configure(image = new_image)
     mf(playername)
     playername.pack(padx= 20, pady= 20)
     
@@ -533,13 +579,18 @@ for i in range(1,16):
 csk_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "CHENNAI SUPER KINGS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
 csk_team_list_frame.pack(padx=20,pady=10)
 
-for i in range(1,16):
+for i in range(15,30):
     player_detail_frame = ctk.CTkFrame(csk_team_list_frame)
     player_detail_frame.pack(padx=50,pady=10, side = 'left')
     playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
     playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
+    n = results[i][0]
+    new_image_path = results[i][2]  
+    base64_data = base64.b64encode(new_image_path).decode('utf-8')
+    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
+    new_image = ctk.CTkImage(dark_image=imagep, size=(230,230))
+    playername = ctk.CTkLabel(master=player_detail_frame, text=n)
+    playerimage.configure(image = new_image)
     mf(playername)
     playername.pack(padx= 20, pady= 20)
 
@@ -639,3 +690,12 @@ for i in range(1,16):
 show_page1(page1,page2,page3)
 window.state("zoomed")
 window.mainloop()
+cursor.execute("Delete from csk")
+cursor.execute("Delete from rcb")
+cursor.execute("Delete from mi")
+cursor.execute("Delete from srh")
+cursor.execute("Delete from rr")
+cursor.execute("Delete from kkr")
+cursor.execute("Delete from pk")
+cursor.execute("Delete from dc")
+connection.commit()

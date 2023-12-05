@@ -145,7 +145,7 @@ class IPL_Auction:
         self.window.state("zoomed")
         self.window.mainloop()
 
-    def show_team_selection_page(self):
+    def show_team_selection_page(self, teampage, auctionpage):
         team_selection_page = TeamPage(self, self.show_auction_page,)
         team_selection_page.pack(fill="both", expand=True)
         self.current_page = team_selection_page
