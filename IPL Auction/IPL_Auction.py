@@ -1,20 +1,17 @@
 import tkinter as tk
-from tkinter import ttk, PhotoImage
 import customtkinter as ctk
-import tkinter.font
-from PIL import Image, ImageTk
+from PIL import Image
 from auction_lib import *
-import datetime
 import mysql.connector
 import random
 import time
 import io
 import base64
 import gc
-import locale
 
-locale.setlocale(locale.LC_ALL, '')
-gc.disable()
+gc.disable()  # Disabling garbage collection
+
+# Connecting to mysql database
 
 connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
 cursor = connection.cursor()
@@ -35,23 +32,24 @@ def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
     bid_start()
     
 def bid_start():
+    global namep, y
+    
     y = int(player_index.get())
-    global namep, imagep
+    if y == 120 :
+        show_page3(page1,page2,page3)
     namep = results[y][0]
     amou = results[y][1]
     am = str(float(amou)/10000000)+" Cr"
     
     try:
-        new_image_path = results[y][2]
-        print(type(new_image_path))  
-        base64_data = base64.b64encode(new_image_path).decode('utf-8')
-        imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
-        image = ctk.CTkImage(dark_image=imagep,size=(230,230))
+        new_image_path = results[y][2] 
+        image = get_image(new_image_path)
         playerimage1.configure(image = image)
     except Exception as e:
         print(e)
     pn.set(namep)
     bidam.set(am)
+    nbidam.set(str(round(float(amou)/10000000+0.1,1))+" Cr")
     y += 1
     player_index.set(y)
     window.update_idletasks()
@@ -79,57 +77,102 @@ def back():
 
 bidl = 15  
 def bid():
-    x = int(bidno.get()) - 1
-    bidno.set(x)
-    z = float(bidam.get()[0:-3:])
-    m = float(tspent.get()[0:-3:])
-    a = str(round(z + m,1))+" Cr"
-    tspent.set(a)
+    def cont():
+        auto(list_team)
+        windowb.destroy()
+        show_page3(page1, page2, page3)
+
+    bidno.set(int(bidno.get()) - 1)
+    tspent.set(str(round(float(bidam.get()[0:-3:]) + float(tspent.get()[0:-3:]),1))+" Cr")
     time.sleep(0.25)
+    t = team.get()
+    cb2.configure(text = t)
+
     name = team.get()
     for i in d:
         if name == i:
             cursor.execute('insert into %s select * from auction where Name = "%s"' %(d[name],namep))
             connection.commit()
+
     playernameif = ctk.CTkFrame(master = player_list_frame)
     playernameif.pack(padx=10,pady=5)
     e = pn.get()
     playernamei = ctk.CTkLabel(master = playernameif,text=e)
     pf(playernamei)
     playernamei.pack(padx=30,pady=10)
+
     bid_start()    
     if x == 0:
-        time.sleep(1)
-        bidb.configure(state = 'disabled')
-        show_page3(page1, page2, page3)
-    t = team.get()
-    cb2.configure(text = t)
+        bidb.configure(state="disabled")
+        windowb = ctk.CTkToplevel()
+        text = "Congratulations you have successfully created your team.\nPlease wait until the other teams are formed.\nClick on continue to proceed."
+        warn1(windowb, text, cont)
 
 def pas():
-    x = random.choice(list_team)
-    print(x)
+    i = 1
+    while i < 2:
+            x = random.choice(list_team)
+            cursor.execute('select count(0) from %s'%d[x])
+            if cursor.fetchall()[0][0] != 15:
+                cursor.execute('insert into %s select * from auction where Name = "%s"' %(d[x],namep))
+                connection.commit()
+                time.sleep(0.05)
+                cb2.configure(text = x)
+                bid_start()
+                i += 1
+                
+            else:
+                print(x)
+                list_team.remove(x)
 
 def nex():
     def yes1():
+        list_team.append(team.get())
+        auto(list_team)   
         show_page3(page1, page2, page3)
         windowb.destroy()
+
     windowb = ctk.CTkToplevel()
-    windowb.title("Warning")
-    windowb.geometry("415x150")
-    windowb.grid_rowconfigure(1)
-    frame = ctk.CTkFrame(master = windowb)
-    frame.grid_columnconfigure(1)
-    warn = ctk.CTkLabel(master = windowb, text = "You are about to let the game auto form your team.\nAre you sure you want to proceed?", font = ("Product Sans",18))
-    yes = ctk.CTkButton(master = frame, command=yes1, text = "Yes",)
-    yes.grid(row = 0, column = 1, sticky = 'ew', padx = 10, pady = 10)
-    no = ctk.CTkButton(master = frame, command=windowb.destroy, text = "No",)
-    no.grid(row = 0, column = 0, sticky = 'ew', padx = 10, pady = 10)
-    warn.grid(row = 0, column = 0, sticky = 'ew', padx = 10, pady = 10)
-    frame.grid(row = 1, column = 0, sticky = 'ew', padx = 10, pady = 10)
-    windowb.attributes('-topmost',True)
-    windowb.mainloop()
+    text = "You are about to let the game auto form your team.\nAre you sure you want to proceed?"
+    warn(windowb=windowb, text=text, cmd=yes1)
 
+def show_page3(page1,page2,page3):
+    page1.pack_forget()
+    page2.pack_forget()
+    page3.pack()
+    frame_list = [rcb, csk, mi, srh, rr, kkr, pk, dc]
+    q = 0
+    for j in d:
+        cursor.execute('select * from %s'%d[j])
+        data = cursor.fetchall()
+        for i in range(len(data)):
+            n = data[i][0]
+            new_image_path = data[i][2]
+            new_image = get_image(new_image_path)
+            player_detail_frame = ctk.CTkFrame(master=frame_list[q])
+            playername = ctk.CTkLabel(master=player_detail_frame, text=n)
+            playerimage = ctk.CTkLabel(master=player_detail_frame, text = "", image = new_image)
+            mf(playername)
+            player_detail_frame.pack(padx=50,pady=10, side = 'left')
+            playerimage.pack(padx=20,pady=20)
+            playername.pack(padx= 20, pady= 20)
+        q += 1
 
+def auto(lt):
+    i=y
+    while i < 120:
+        x = random.choice(lt)
+        cursor.execute('select count(0) from %s'%d[x])
+        
+        if cursor.fetchall()[0][0] != 15:
+            cursor.execute('insert into %s select * from auction where Name = "%s"' %(d[x],namep))
+            connection.commit()
+            time.sleep(0.05)
+            bid_start()
+            i += 1
+                
+        else:
+            list_team.remove(x) 
 
 # Window
 
@@ -159,19 +202,10 @@ profile_frame = ctk.CTkFrame(page2)
 imageprofile = ctk.CTkLabel(profile_frame, text = "")
 Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="transparent")
 
-im_list = []
-for i in results: 
-    y = 0
-    new_image_path = results[y][2]  
-    base64_data = base64.b64encode(new_image_path).decode('utf-8')
-    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
-    new_image = ctk.CTkImage(dark_image=imagep)
-    im_list.append(new_image)
-    y+=1
-
-im1 = im_list[0]
-im2 = im_list[1]
 # PAGE 1
+
+# Vars
+
 player_index = tk.StringVar(value=0)
 team = tk.StringVar()
 d = {"ROYAL\nCHALLENGERS\nBANGALORE" : "rcb", "CHENNAI\nSUPER KINGS" : "csk", "MUMBAI\nINDIANS" : "mi", "SUNRISERS\nHYDERABAD" : "srh", "RAJASTHAN\nROYALS" : "rr", "KOLKATA\nKNIGHT RIDERS" : "kkr", "PUNJAB\nKINGS" : "pk", "DELHI\nCAPITALS" : "dc"}
@@ -180,8 +214,6 @@ bidno = tk.StringVar()
 bidno.set(bidl)
 bidam = tk.StringVar()
 nbidam = tk.StringVar()
-q = 0
-nbidam.set(q*0.1 + q)
 tspent = tk.StringVar()
 inti = "0.0 Cr"
 tspent.set(inti)
@@ -556,134 +588,43 @@ team_list_frame.grid(column=0,padx=20,pady=10)
 
 # RCB
 
-rcb_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "ROYAL CHALLENGERS BANGALORE", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-rcb_team_list_frame.pack(padx=20,pady=10)
+rcb = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "ROYAL CHALLENGERS BANGALORE", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+rcb.pack(padx=20,pady=10)
 
-for i in range(15):
-    player_detail_frame = ctk.CTkFrame(rcb_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.pack(padx=20,pady=20)
-    n = results[i][0]
-    new_image_path = results[i][2]  
-    base64_data = base64.b64encode(new_image_path).decode('utf-8')
-    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
-    new_image = ctk.CTkImage(dark_image=imagep, size=(230,230))
-    playername = ctk.CTkLabel(master=player_detail_frame, text=n)
-    playerimage.configure(image = new_image)
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
-    
 # CSK
 
-csk_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "CHENNAI SUPER KINGS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-csk_team_list_frame.pack(padx=20,pady=10)
-
-for i in range(15,30):
-    player_detail_frame = ctk.CTkFrame(csk_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.pack(padx=20,pady=20)
-    n = results[i][0]
-    new_image_path = results[i][2]  
-    base64_data = base64.b64encode(new_image_path).decode('utf-8')
-    imagep = Image.open(io.BytesIO(base64.b64decode(base64_data)))
-    new_image = ctk.CTkImage(dark_image=imagep, size=(230,230))
-    playername = ctk.CTkLabel(master=player_detail_frame, text=n)
-    playerimage.configure(image = new_image)
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
+csk = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "CHENNAI SUPER KINGS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+csk.pack(padx=20,pady=10)
 
 # MI
 
-mi_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "MUMBAI INDIANS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-mi_team_list_frame.pack(padx=20,pady=10)
-
-for i in range(1,16):
-    player_detail_frame = ctk.CTkFrame(mi_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
-    playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
+mi = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "MUMBAI INDIANS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+mi.pack(padx=20,pady=10)
 
 # SRH
 
-srh_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "SUNRISERS HYDERABAD", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-srh_team_list_frame.pack(padx=20,pady=10)
-
-for i in range(1,16):
-    player_detail_frame = ctk.CTkFrame(srh_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
-    playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
+srh = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "SUNRISERS HYDERABAD", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+srh.pack(padx=20,pady=10)
 
 # RR
 
-rr_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "RAJASTHAN ROYALS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-rr_team_list_frame.pack(padx=20,pady=10)
-
-for i in range(1,16):
-    player_detail_frame = ctk.CTkFrame(rr_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
-    playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
+rr = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "RAJASTHAN ROYALS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+rr.pack(padx=20,pady=10)
 
 # KKR
 
-kkr_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "KOLKATA KNIGHT RIDERS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-kkr_team_list_frame.pack(padx=20,pady=10)
-
-for i in range(1,16):
-    player_detail_frame = ctk.CTkFrame(kkr_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
-    playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
+kkr = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "KOLKATA KNIGHT RIDERS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+kkr.pack(padx=20,pady=10)
 
 # PK
 
-pk_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "PUNJAB KINGS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-pk_team_list_frame.pack(padx=20,pady=10)
-
-for i in range(1,16):
-    player_detail_frame = ctk.CTkFrame(pk_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
-    playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
+pk = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "PUNJAB KINGS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+pk.pack(padx=20,pady=10)
 
 # DC
 
-dc_team_list_frame = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "DELHI CAPITALS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
-dc_team_list_frame.pack(padx=20,pady=10)
-
-for i in range(1,16):
-    player_detail_frame = ctk.CTkFrame(dc_team_list_frame)
-    player_detail_frame.pack(padx=50,pady=10, side = 'left')
-    playerimage = ctk.CTkLabel(master=player_detail_frame, text = "")
-    playerimage.configure(image = image_player)
-    playerimage.pack(padx=20,pady=20)
-    playername = ctk.CTkLabel(master=player_detail_frame, text="Player Name")
-    mf(playername)
-    playername.pack(padx= 20, pady= 20)
-
+dc = ctk.CTkScrollableFrame(team_list_frame, height = 350, width = 1800, label_text = "DELHI CAPITALS", label_font = ("Portico Rounded", 20), label_fg_color = "transparent", scrollbar_button_color = "#1F538D",scrollbar_button_hover_color = "#14375E", orientation = "horizontal")
+dc.pack(padx=20,pady=10)
 
 # Run
 
