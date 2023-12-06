@@ -27,6 +27,7 @@ def show_page2(page1,page2,page3,imgprof, image, Teamname, name):
     page1.pack_forget()
     page2.pack()
     page3.pack_forget()
+    start_page.pack_forget
     imgprof.configure(image=image)
     Teamname.configure(text = name)
     bid_start()
@@ -56,57 +57,104 @@ def bid_start():
 
 def back():
     def yes1():
-        show_page1(page1, page2, page3)
+        list_team.append(team.get())
+        y = 0
+        cursor.execute("Delete from csk")
+        cursor.execute("Delete from rcb")
+        cursor.execute("Delete from mi")
+        cursor.execute("Delete from srh")
+        cursor.execute("Delete from rr")
+        cursor.execute("Delete from kkr")
+        cursor.execute("Delete from pk")
+        cursor.execute("Delete from dc")
+        connection.commit()
+
+        show_page(page1, start_page, page2, page3)
         windowb.destroy()
     windowb = ctk.CTkToplevel()
-    windowb.title("Warning")
-    windowb.geometry("400x150")
-    windowb.grid_rowconfigure(1)
-    frame = ctk.CTkFrame(master = windowb)
-    frame.grid_columnconfigure(1)
-    warn = ctk.CTkLabel(master = windowb, text = "You are about to leave the game.\nAre you sure you want to proceed?", font = ("Product Sans",18))
-    yes = ctk.CTkButton(master = frame, command=yes1, text = "Yes",)
-    yes.grid(row = 0, column = 1, sticky = 'nsew', padx = 10, pady = 10)
-    no = ctk.CTkButton(master = frame, command=windowb.destroy, text = "No",)
-    no.grid(row = 0, column = 0, sticky = 'nsew', padx = 10, pady = 10)
-    warn.grid(row = 0, column = 0, sticky = 'ew', padx = 10, pady = 10)
-    frame.grid(row = 1, column = 0, sticky = 'ew', padx = 10, pady = 10)
-    windowb.attributes('-topmost',True)
-    windowb.mainloop()
-    player_index.set(value=0)
+    text = "You are about to leave the game. \nAre you sure you want to proceed?"
+    warn(windowb, text, yes1)
+
 
 bidl = 15  
 def bid():
+    def re(r):
+        i = 1
+        while i < 2:
+                cursor.execute('select count(0) from %s'%d[r])
+                if cursor.fetchall()[0][0] != 15:
+                    cb2.configure(text = r)
+                    i += 1
+                    bidam.set(str(round(float(nbidam.get()[0:-3:]),1))+" Cr")
+                    nbidam.set(str(round(float(nbidam.get()[0:-3:])+0.1,1))+" Cr")
+                    text1 = "Another player has placed a bid for this player.\nDo you wish to rebid for this player"
+                    rebid(windowc, text1, yes, no)
+                    
+                else:
+                    list_team.remove(r)
+                    r = random.choice(list_team)
+
     def cont():
         auto(list_team)
         windowb.destroy()
         show_page3(page1, page2, page3)
 
-    bidno.set(int(bidno.get()) - 1)
-    tspent.set(str(round(float(bidam.get()[0:-3:]) + float(tspent.get()[0:-3:]),1))+" Cr")
-    time.sleep(0.25)
+    def yes():
+        t = team.get()
+        cb2.configure(text = t)
+        windowc.destroy()
+        time.sleep(1)
+        bid()
+
+    def no():
+        cb2.configure(text = r)
+        cursor.execute('insert into %s select * from auction where Name = "%s"' %(d[r],namep))
+        connection.commit()
+        windowc.destroy()
+        time.sleep(1)
+        bid_start()
+
+    x = int(bidno.get()) - 1
     t = team.get()
     cb2.configure(text = t)
-
-    name = team.get()
-    for i in d:
-        if name == i:
-            cursor.execute('insert into %s select * from auction where Name = "%s"' %(d[name],namep))
-            connection.commit()
-
-    playernameif = ctk.CTkFrame(master = player_list_frame)
-    playernameif.pack(padx=10,pady=5)
-    e = pn.get()
-    playernamei = ctk.CTkLabel(master = playernameif,text=e)
-    pf(playernamei)
-    playernamei.pack(padx=30,pady=10)
-
-    bid_start()    
     if x == 0:
         bidb.configure(state="disabled")
         windowb = ctk.CTkToplevel()
         text = "Congratulations you have successfully created your team.\nPlease wait until the other teams are formed.\nClick on continue to proceed."
         warn1(windowb, text, cont)
+    
+    l1 = [0, 1, 1]
+    z = random.choice(l1)
+    if z == 1:
+        windowc = ctk.CTkToplevel()
+        r = random.choice(list_team)
+        time.sleep(1)
+        re(r)
+
+    else:
+        bidno.set(x)
+        tspent.set(str(round(float(bidam.get()[0:-3:]) + float(tspent.get()[0:-3:]),1))+" Cr")
+        time.sleep(0.25)
+        try:
+            t = team.get()
+            cb2.configure(text = t)
+        except:
+            pass
+
+        name = team.get()
+        for i in d:
+            if name == i:
+                cursor.execute('insert into %s select * from auction where Name = "%s"' %(d[name],namep))
+                connection.commit()
+
+        playernameif = ctk.CTkFrame(master = player_list_frame)
+        playernameif.pack(padx=10,pady=5)
+        e = pn.get()
+        playernamei = ctk.CTkLabel(master = playernameif,text=e)
+        pf(playernamei)
+        playernamei.pack(padx=30,pady=10)
+
+        bid_start()    
 
 def pas():
     i = 1
@@ -122,7 +170,6 @@ def pas():
                 i += 1
                 
             else:
-                print(x)
                 list_team.remove(x)
 
 def nex():
@@ -139,6 +186,7 @@ def nex():
 def show_page3(page1,page2,page3):
     page1.pack_forget()
     page2.pack_forget()
+    start_page.pack_forget()
     page3.pack()
     frame_list = [rcb, csk, mi, srh, rr, kkr, pk, dc]
     q = 0
@@ -183,6 +231,8 @@ window = ctk.CTk()
 window.title("IPL Auction Simulation")
 window.geometry("1920x1080")
 
+start_page = ctk.CTkFrame(window)
+
 page1 = ctk.CTkFrame(window)
 page1.grid_rowconfigure(0, weight=1)
 page1.grid_rowconfigure(1, weight=1)
@@ -201,6 +251,22 @@ page3.grid_columnconfigure(0, weight=1)
 profile_frame = ctk.CTkFrame(page2)
 imageprofile = ctk.CTkLabel(profile_frame, text = "")
 Teamname = ctk.CTkLabel(master = profile_frame, justify = "center", fg_color="transparent")
+
+# Start page
+def p():
+    def yes2():
+        windowb.destroy()
+        show_page(page1, start_page, page2, page3)
+        
+    windowb = ctk.CTkToplevel()
+    start(windowb, yes1=yes2)
+
+bg = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/bg1.png"), size = (1920,1080))
+bg_label = ctk.CTkLabel(master = start_page, text = "", image = bg)
+bg_label.grid(row = 0, column = 0)
+Start_button = ctk.CTkButton(master = start_page, text = "START", fg_color="#1A3989", command=p, width = 200, height=50, bg_color="transparent", corner_radius = 10, border_width = 0)
+Start_button.grid(row = 0, column = 0, pady=200, padx= 30, sticky = 's')
+mf(Start_button)
 
 # PAGE 1
 
@@ -628,8 +694,8 @@ dc.pack(padx=20,pady=10)
 
 # Run
 
-show_page1(page1,page2,page3)
-window.state("zoomed")
+window.state(newstate="zoomed")
+show_page(start_page, page1, page2, page3)
 window.mainloop()
 cursor.execute("Delete from csk")
 cursor.execute("Delete from rcb")
