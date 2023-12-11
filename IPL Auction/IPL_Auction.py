@@ -81,6 +81,7 @@ def bid():
     def re(r):
         i = 1
         while i < 2:
+                bidb.configure(state = "disabled")
                 cursor.execute('select count(0) from %s'%d[r])
                 if cursor.fetchall()[0][0] != 15:
                     cb2.configure(text = r)
@@ -104,6 +105,7 @@ def bid():
         cb2.configure(text = t)
         windowc.destroy()
         time.sleep(1)
+        bidb.configure(state = "normal")
         bid()
 
     def no():
@@ -112,6 +114,7 @@ def bid():
         connection.commit()
         windowc.destroy()
         time.sleep(1)
+        bidb.configure(state = "normal")
         bid_start()
 
     x = int(bidno.get()) - 1
@@ -264,7 +267,7 @@ def p():
 bg = ctk.CTkImage(dark_image=Image.open(r"./IPL Auction/assets/bg1.png"), size = (1920,1080))
 bg_label = ctk.CTkLabel(master = start_page, text = "", image = bg)
 bg_label.grid(row = 0, column = 0)
-Start_button = ctk.CTkButton(master = start_page, text = "START", fg_color="#1A3989", command=p, width = 200, height=50, bg_color="transparent", corner_radius = 10, border_width = 0)
+Start_button = ctk.CTkButton(master = start_page, text = "START", fg_color="#1A3989", command=p, width = 200, height=50, bg_color="transparent", corner_radius = 0, border_width = 0)
 Start_button.grid(row = 0, column = 0, pady=200, padx= 30, sticky = 's')
 mf(Start_button)
 
