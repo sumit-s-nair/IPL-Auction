@@ -5,6 +5,7 @@ from auction_lib import *
 import mysql.connector
 import random
 import time
+import sqlite3
 import io
 import base64
 import gc
@@ -13,7 +14,7 @@ gc.disable()  # Disabling garbage collection
 
 # Connecting to mysql database
 
-connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
+connection = sqlite3.connect('iplauction_images.db')
 cursor = connection.cursor()
 x = "use iplplayers;"
 cursor.execute(x)
