@@ -14,7 +14,7 @@ gc.disable()  # Disabling garbage collection
 
 # Connecting to mysql database
 
-connection = sqlite3.connect('iplauction_images.db')
+connection = mysql.connector.connect(host='127.0.0.1', database='iplplayers', user='root', password='admin')
 cursor = connection.cursor()
 x = "use iplplayers;"
 cursor.execute(x)
